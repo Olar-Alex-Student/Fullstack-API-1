@@ -1,4 +1,5 @@
 ﻿using FullStack.API.Data;
+using FullStack.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,28 @@ namespace FullStack.API.Controllers
             this.fullStackDBContext = fullStackDBContext;
         }
 
+        /* Get Angajati */
+
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
             var employees = await fullStackDBContext.Employees.ToListAsync();
             
             return Ok(employees);
+        }
+
+        /* Post Angajati */
+
+        [HttpPost]
+        public async Task<IActionResult> AddEmployee([FromBody] Employee employeeRequest)
+        {
+            //Id unic
+            employeeRequest.Id = Guid.NewGuid();
+
+            await fullStackDBContext.Employees.AddAsync(employeeRequest);
+            await fullStackDBContext.SaveChangesAsync();
+
+            return Ok(employeeRequest);
         }
     }
 }
