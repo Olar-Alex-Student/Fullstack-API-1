@@ -2,6 +2,7 @@
 using FullStack.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace FullStack.API.Controllers
 {
@@ -114,6 +115,23 @@ namespace FullStack.API.Controllers
 
             // Return status 
             return Ok(user);
+        }
+
+        /* GET Id Uilizator */
+
+        [HttpGet]
+
+        [Route("login")]
+        public async Task<IActionResult> GetUserId(string email, string password)
+        {
+            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => (x.Email == email && x.Password == password));
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user.Id); ;
         }
     }
 }
