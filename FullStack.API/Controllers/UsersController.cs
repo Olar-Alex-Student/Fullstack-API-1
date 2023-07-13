@@ -132,6 +132,6 @@ namespace FullStack.API.Controllers
             }
 
             return Ok(user.Id); ;
-        }
+        }   
     }
 }
