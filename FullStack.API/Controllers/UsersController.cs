@@ -16,7 +16,10 @@ namespace FullStack.API.Controllers
             this.fullStackDBContext = fullStackDBContext;
         }
 
-        /* Get Toti Utilizatorii */
+        /* End-Point Vechi */
+
+
+        // Get Toti Utilizatorii
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
@@ -26,7 +29,7 @@ namespace FullStack.API.Controllers
             return Ok(users);
         }
 
-        /* Post Utilizatri */
+        // Post Utilizatri
 
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] User userRequest)
@@ -37,15 +40,15 @@ namespace FullStack.API.Controllers
             return Ok(userRequest);
         }
 
-        /* GET 1 Utilzator */
+        // GET 1 Utilzator
 
         [HttpGet]
 
         // ID-ul Utilizatorlui
         [Route("{id:Guid}")]
-        public async Task<IActionResult> GetUser([FromRoute] Guid id)
+        public async Task<IActionResult> GetUser([FromRoute] string UserId)
         {
-            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => x.UserId == UserId);
 
             if (user == null)
             {
@@ -55,17 +58,17 @@ namespace FullStack.API.Controllers
             return Ok(user);
         }
 
-        /* PUT Utilizator */
+        // PUT Utilizator
 
         [HttpPut]
 
         // ID-ul Utilizatoruui
         [Route("{id:Guid}")]
-        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, User updateUserRequest)
+        public async Task<IActionResult> UpdateUser([FromRoute] string UserId, User updateUserRequest)
         {
             // Asignarea angajatului cu datele din baza de date
 
-            var user = await fullStackDBContext.Users.FindAsync(id);
+            var user = await fullStackDBContext.Users.FindAsync(UserId);
 
             // Verificarea daca utilizatorul este null
 
@@ -78,7 +81,6 @@ namespace FullStack.API.Controllers
 
             user.Name = updateUserRequest.Name;
             user.Email = updateUserRequest.Email;
-            user.Password = updateUserRequest.Password;
 
             // Actualizarea bazei de date
             await fullStackDBContext.SaveChangesAsync();
@@ -87,18 +89,18 @@ namespace FullStack.API.Controllers
             return Ok(user);
         }
 
-        /* DELETE Utilizator */
+        // DELETE Utilizator
 
         [HttpDelete]
 
         // ID-ul Utilizatorui
         [Route("{id:Guid}")]
 
-        public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteUser([FromRoute] string UserId)
         {
             // Asignarea utilizatorului cu datele din baza de date
 
-            var user = await fullStackDBContext.Users.FindAsync(id);
+            var user = await fullStackDBContext.Users.FindAsync(UserId);
 
             // Verificarea daca utilizatorul este null
 
@@ -117,21 +119,21 @@ namespace FullStack.API.Controllers
             return Ok(user);
         }
 
-        /* GET Id Uilizator */
+        // GET Id Uilizator
 
         [HttpGet]
 
         [Route("login")]
-        public async Task<IActionResult> GetUserId(string email, string password)
+        public async Task<IActionResult> GetUserId(string email)
         {
-            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => (x.Email == email && x.Password == password));
+            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => (x.Email == email));
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(user.Id); ;
-        }   
+            return Ok(user.UserId); ;
+        }
     }
 }
