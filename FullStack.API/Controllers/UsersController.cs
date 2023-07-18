@@ -34,6 +34,13 @@ namespace FullStack.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] User userRequest)
         {
+
+            var existingUser = await fullStackDBContext.Users.FirstOrDefaultAsync(u => u.Email == userRequest.Email);
+            if (existingUser != null)
+            {
+                return Conflict("User already exists"); // Return a 409 Conflict status if user already exists
+            }
+
             await fullStackDBContext.Users.AddAsync(userRequest);
             await fullStackDBContext.SaveChangesAsync();
 
