@@ -16,9 +16,6 @@ namespace FullStack.API.Controllers
             this.fullStackDBContext = fullStackDBContext;
         }
 
-        /* End-Point Vechi */
-
-
         // Get Toti Utilizatorii
 
         [HttpGet]
@@ -52,10 +49,10 @@ namespace FullStack.API.Controllers
         [HttpGet]
 
         // ID-ul Utilizatorlui
-        [Route("{id:Guid}")]
-        public async Task<IActionResult> GetUser([FromRoute] string UserId)
+        [Route("{id}")]
+        public async Task<IActionResult> GetUser([FromRoute] string id)
         {
-            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => x.UserId == UserId);
+            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => x.UserId == id);
 
             if (user == null)
             {
@@ -70,12 +67,12 @@ namespace FullStack.API.Controllers
         [HttpPut]
 
         // ID-ul Utilizatoruui
-        [Route("{id:Guid}")]
-        public async Task<IActionResult> UpdateUser([FromRoute] string UserId, User updateUserRequest)
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateUser([FromRoute] string id, User updateUserRequest)
         {
             // Asignarea angajatului cu datele din baza de date
 
-            var user = await fullStackDBContext.Users.FindAsync(UserId);
+            var user = await fullStackDBContext.Users.FindAsync(id);
 
             // Verificarea daca utilizatorul este null
 
@@ -101,13 +98,13 @@ namespace FullStack.API.Controllers
         [HttpDelete]
 
         // ID-ul Utilizatorui
-        [Route("{id:Guid}")]
+        [Route("{id}")]
 
-        public async Task<IActionResult> DeleteUser([FromRoute] string UserId)
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
             // Asignarea utilizatorului cu datele din baza de date
 
-            var user = await fullStackDBContext.Users.FindAsync(UserId);
+            var user = await fullStackDBContext.Users.FindAsync(id);
 
             // Verificarea daca utilizatorul este null
 
