@@ -35,7 +35,7 @@ namespace FullStack.API.Controllers
             var existingUser = await fullStackDBContext.Users.FirstOrDefaultAsync(u => u.Email == userRequest.Email);
             if (existingUser != null)
             {
-                return Conflict("User already exists"); // Return a 409 Conflict status if user already exists
+                return Ok(existingUser); // Return a 409 Conflict status if user already exists
             }
 
             await fullStackDBContext.Users.AddAsync(userRequest);
