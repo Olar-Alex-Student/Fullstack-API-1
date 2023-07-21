@@ -21,7 +21,7 @@ namespace FullStack.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
-            var employees = await fullStackDBContext.Employees.ToListAsync();
+            var employees = await fullStackDBContext.Employees.Include(x => x.Department).ToListAsync();
 
             return Ok(employees);
         }
@@ -32,9 +32,10 @@ namespace FullStack.API.Controllers
         public async Task<IActionResult> AddEmployee([FromBody] Employee employeeRequest)
         {
             //Id unic
-            employeeRequest.Id = Guid.NewGuid();
+            employeeRequest.EmployeeId = Guid.NewGuid();
 
             await fullStackDBContext.Employees.AddAsync(employeeRequest);
+            await fullStackDBContext.Departments.AddAsync(employeeRequest.Department);
             await fullStackDBContext.SaveChangesAsync();
 
             return Ok(employeeRequest);
@@ -48,7 +49,7 @@ namespace FullStack.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetEmployee([FromRoute] Guid id)
         {
-            var employee = await fullStackDBContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
+            var employee = await fullStackDBContext.Employees.FirstOrDefaultAsync(x => x.EmployeeId == id);
 
             if (employee == null)
             {
@@ -83,7 +84,8 @@ namespace FullStack.API.Controllers
             employee.Email = updateEmployeeRequest.Email;
             employee.Phone = updateEmployeeRequest.Phone;
             employee.Salary = updateEmployeeRequest.Salary;
-            employee.Department = updateEmployeeRequest.Department;
+            employee.Department.DepartmentId = updateEmployeeRequest.Department.DepartmentId;
+            employee.Department.Name = updateEmployeeRequest.Department.Name;
 
             // Actualizarea bazei de date
             await fullStackDBContext.SaveChangesAsync();

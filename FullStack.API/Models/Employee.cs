@@ -1,14 +1,15 @@
-﻿namespace FullStack.API.Models
+﻿using System;
+
+namespace FullStack.API.Models
 {
     public class Employee
     {
-        public Guid Id { get; set; }
-        //public Guid AvatarId { get; set; }
-        //public Image Avatar { get; set; }
+        public Guid EmployeeId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public long Salary { get; set; }
-        public string Department { get; set; }
+
+        public Department Department { get; set; }
     }
 }

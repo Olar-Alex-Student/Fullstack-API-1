@@ -17,19 +17,33 @@ namespace FullStack.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.8")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FullStack.API.Models.Employee", b =>
+            modelBuilder.Entity("FullStack.API.Models.Department", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("DepartmentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Department")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("FullStack.API.Models.Employee", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -43,7 +57,9 @@ namespace FullStack.API.Migrations
                     b.Property<long>("Salary")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.HasKey("EmployeeId");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Employees");
                 });
@@ -71,6 +87,15 @@ namespace FullStack.API.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FullStack.API.Models.Employee", b =>
+                {
+                    b.HasOne("FullStack.API.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
                 });
 #pragma warning restore 612, 618
         }
