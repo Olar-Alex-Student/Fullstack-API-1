@@ -31,11 +31,18 @@ namespace FullStack.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee([FromBody] Employee employeeRequest)
         {
+            if(employeeRequest == null)
+            {
+                return BadRequest("Employee request null");
+            }
             //Id unic
             employeeRequest.EmployeeId = Guid.NewGuid();
 
             await fullStackDBContext.Employees.AddAsync(employeeRequest);
-            await fullStackDBContext.Departments.AddAsync(employeeRequest.Department);
+            if(employeeRequest.Department != null)
+            {
+                await fullStackDBContext.Departments.AddAsync(employeeRequest.Department);
+            }
             await fullStackDBContext.SaveChangesAsync();
 
             return Ok(employeeRequest);

@@ -14,7 +14,8 @@ namespace FullStack.API.Data
         {
             modelBuilder.Entity<Employee>()
                 .HasOne(e => e.Department)
-                .WithMany(); // Assuming a Department can have multiple employees, adjust if necessary
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId); // Assuming a Department can have multiple employees, adjust if necessary
         }
     }
 }
