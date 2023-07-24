@@ -71,7 +71,7 @@ namespace FullStack.API.Controllers
         {
             // Asignarea departamentului cu datele din baza de date
 
-            var department = await fullStackDBContext.Employees.FindAsync(id);
+            var department = await fullStackDBContext.Departments.FindAsync(id);
 
             // Verificarea daca departamentul este null
 
@@ -82,10 +82,11 @@ namespace FullStack.API.Controllers
 
             // Modificarea datelor departamentului
 
-            department.Name = updateDepartmentRequest.Name;
             department.DepartmentId = updateDepartmentRequest.DepartmentId;
+            department.Name = updateDepartmentRequest.Name;
 
             // Actualizarea bazei de date
+
             await fullStackDBContext.SaveChangesAsync();
 
             // Return status 
@@ -103,7 +104,7 @@ namespace FullStack.API.Controllers
         {
             // Asignarea Department cu datele din baza de date
 
-            var department = await fullStackDBContext.Employees.FindAsync(id);
+            var department = await fullStackDBContext.Departments.FindAsync(id);
 
             // Verificarea daca angajatul este null
 
@@ -113,7 +114,7 @@ namespace FullStack.API.Controllers
             }
 
             // Stergerea Departamentului din baza de date
-            fullStackDBContext.Employees.Remove(department);
+            fullStackDBContext.Departments.Remove(department);
 
             // Actualizarea bazei de date
             await fullStackDBContext.SaveChangesAsync();
