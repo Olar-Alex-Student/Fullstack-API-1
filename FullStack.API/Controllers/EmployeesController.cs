@@ -91,8 +91,8 @@ namespace FullStack.API.Controllers
             employee.Email = updateEmployeeRequest.Email;
             employee.Phone = updateEmployeeRequest.Phone;
             employee.Salary = updateEmployeeRequest.Salary;
-            employee.Department.DepartmentId = updateEmployeeRequest.Department.DepartmentId;
-            employee.Department.Name = updateEmployeeRequest.Department.Name;
+            employee.DepartmentId = updateEmployeeRequest.DepartmentId;
+            employee.Department = updateEmployeeRequest.Department;
 
             // Actualizarea bazei de date
             await fullStackDBContext.SaveChangesAsync();
