@@ -13,6 +13,9 @@ namespace FullStack.API.Controllers
         private readonly FullStackDBContext fullStackDBContext;
         public EmployeesController(FullStackDBContext fullStackDBContext)
         {
+
+            // Asigneaza baza de date la variabila
+
             this.fullStackDBContext = fullStackDBContext;
         }
 
@@ -21,7 +24,12 @@ namespace FullStack.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
+
+            // Asigneaza toti angajatii la variabla incluzand departamentele aferente
+
             var employees = await fullStackDBContext.Employees.Include(x => x.Department).ToListAsync();
+
+            // Returneaza angajatul
 
             return Ok(employees);
         }
@@ -31,19 +39,40 @@ namespace FullStack.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee([FromBody] Employee employeeRequest)
         {
+
+            // Verifica daca angajatul este null
+
             if(employeeRequest == null)
             {
                 return BadRequest("Employee request null");
             }
-            //Id unic
+
+            // Adauga Id unic
+
             employeeRequest.EmployeeId = Guid.NewGuid();
 
-            await fullStackDBContext.Employees.AddAsync(employeeRequest);
-            if(employeeRequest.Department != null)
+            // Verifica daca Id-ul e departament este deja in baza de date
+
+            var existingDepartment = fullStackDBContext.Departments.FirstOrDefault(d => d.DepartmentId == employeeRequest.DepartmentId);
+            if (existingDepartment == null)
             {
-                await fullStackDBContext.Departments.AddAsync(employeeRequest.Department);
+                // If the department with the given ID does not exist, handle it accordingly.
+                // For example, you can throw an exception or log an error message.
+                throw new ArgumentException($"Department with ID {employeeRequest.DepartmentId} does not exist.");
             }
+
+            employeeRequest.Department = existingDepartment;
+
+
+            // Adauga la baza de date noul angajat
+
+            await fullStackDBContext.Employees.AddAsync(employeeRequest);
+
+            // Salveaza modificarile
+
             await fullStackDBContext.SaveChangesAsync();
+
+            // Returneaz angajatul
 
             return Ok(employeeRequest);
         }
@@ -56,12 +85,19 @@ namespace FullStack.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetEmployee([FromRoute] Guid id)
         {
+
+            // Asigenaza angajatul cu Id-ul specificat
+
             var employee = await fullStackDBContext.Employees.FirstOrDefaultAsync(x => x.EmployeeId == id);
+
+            // Returneaza ca nu l-a gasit daca este null
 
             if (employee == null)
             {
                 return NotFound();
             }
+
+            // Returneaza Angajatul
 
             return Ok(employee);
         }
@@ -74,6 +110,7 @@ namespace FullStack.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdateEmployee([FromRoute] Guid id, Employee updateEmployeeRequest)
         {
+
             // Asignarea angajatului cu datele din baza de date
 
             var employee = await fullStackDBContext.Employees.FindAsync(id);
@@ -95,9 +132,11 @@ namespace FullStack.API.Controllers
             employee.Department = updateEmployeeRequest.Department;
 
             // Actualizarea bazei de date
+
             await fullStackDBContext.SaveChangesAsync();
 
             // Return status 
+
             return Ok(employee);
         }
 
@@ -122,12 +161,15 @@ namespace FullStack.API.Controllers
             }
 
             // Stergerea Angajatului din baza de date
+
             fullStackDBContext.Employees.Remove(employee);
 
             // Actualizarea bazei de date
+
             await fullStackDBContext.SaveChangesAsync();
 
             // Return status 
+
             return Ok(employee);
         }
     }
