@@ -13,5 +13,7 @@ namespace FullStack.API.Models
         public string Username { get; set; }
         public string Nickname { get; set; }
         public string Picture { get; set; }
+        public Guid? RoleId { get; set; }
+        public Role? Role { get; set; }
     }
 }
