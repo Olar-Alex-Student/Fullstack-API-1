@@ -48,6 +48,18 @@ namespace FullStack.API.Controllers
                 return Ok(existingUser); // Return a 409 Conflict status if user already exists
             }
 
+            //
+
+            var existingDepartment = fullStackDBContext.Roles.FirstOrDefault(d => d.RoleId == userRequest.RoleId);
+            if (existingDepartment == null)
+            {
+                // If the department with the given ID does not exist, handle it accordingly.
+                // For example, you can throw an exception or log an error message.
+                throw new ArgumentException($"Department with ID {userRequest.RoleId} does not exist.");
+            }
+
+            userRequest.Role = existingDepartment;
+
             // Adaugarea in baza de date
 
             await fullStackDBContext.Users.AddAsync(userRequest);
