@@ -2,6 +2,8 @@
 using FullStack.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using RestSharp;
 
 namespace FullStack.API.Controllers
 {
@@ -124,5 +126,27 @@ namespace FullStack.API.Controllers
             // Return status 
             return Ok(role);
         }
+
+        /* Creare Rol In Auth0  
+
+        [HttpPost]
+
+        // Ruta
+
+        [Route("auth0")]
+
+        public async Task<IActionResult> AddRoleAuth0([FromBody] Role roleRequest)
+        {
+            var client = new RestClient("https://{yourDomain}/api/v2/roles");
+            RestRequest request = new RestRequest(Method.Post);
+            request.AddHeader("content-type", "application/json");
+            request.AddHeader("authorization", "Bearer MGMT_API_ACCESS_TOKEN");
+            request.AddHeader("cache-control", "no-cache");
+            request.AddParameter("application/json", "{ \"name\": \"ROLE_NAME\", \"description\": \"ROLE_DESC\" }", ParameterType.RequestBody);
+            RestResponse response = client.Execute(request);
+
+            return Ok(roleRequest);
+        }
+        */
     }
 }

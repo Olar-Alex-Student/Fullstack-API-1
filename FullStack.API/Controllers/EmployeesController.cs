@@ -1,5 +1,6 @@
 ﻿using FullStack.API.Data;
 using FullStack.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Formats.Asn1;
@@ -8,6 +9,7 @@ namespace FullStack.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly FullStackDBContext fullStackDBContext;
@@ -22,6 +24,7 @@ namespace FullStack.API.Controllers
         /* Get Toti Angajatii */
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllEmployees()
         {
 

@@ -85,3 +85,5 @@ C:\Task3\FustackAPI\FullStack.API\obj\Debug\net6.0\refint\FullStack.API.dll
 C:\Task3\FustackAPI\FullStack.API\obj\Debug\net6.0\FullStack.API.pdb
 C:\Task3\FustackAPI\FullStack.API\obj\Debug\net6.0\FullStack.API.genruntimeconfig.cache
 C:\Task3\FustackAPI\FullStack.API\obj\Debug\net6.0\ref\FullStack.API.dll
+C:\Task3\FustackAPI\FullStack.API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Task3\FustackAPI\FullStack.API\bin\Debug\net6.0\RestSharp.dll

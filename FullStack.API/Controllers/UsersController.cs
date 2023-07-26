@@ -39,7 +39,7 @@ namespace FullStack.API.Controllers
 
             // Asignarea Utilizatorului care are emailul selectat
 
-            var existingUser = await fullStackDBContext.Users.FirstOrDefaultAsync(u => u.Email == userRequest.Email);
+            var existingUser = await fullStackDBContext.Users.Where(u => u.Email == userRequest.Email).Include(x => x.Role).FirstOrDefaultAsync();
 
             // Vreificarea daca Uilizatorul este in baza de date
 
@@ -175,7 +175,7 @@ namespace FullStack.API.Controllers
 
         [HttpGet]
 
-        [Route("login")]
+        [Route("id")]
         public async Task<IActionResult> GetUserId(string email)
         {
 
@@ -193,6 +193,30 @@ namespace FullStack.API.Controllers
             // Returnarea de Id a Utilizatorului
 
             return Ok(user.UserId); ;
+        }
+
+        // GET RoleId Uilizator
+
+        [HttpGet]
+
+        [Route("byemail")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+
+            // Asignarea Utilizatorului care are mail-ul cerut
+
+            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => (x.Email == email));
+
+            // Verificarea daca Utilizatorul-ul nu este null
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Returnarea de Id a Utilizatorului
+
+            return Ok(user.RoleId); ;
         }
     }
 }
