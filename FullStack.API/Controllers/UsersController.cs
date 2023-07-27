@@ -169,6 +169,6 @@ namespace FullStack.API.Controllers
             // Return status 
 
             return Ok(user);
-        }
+        }   
     }
 }

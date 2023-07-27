@@ -9,7 +9,6 @@ namespace FullStack.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly FullStackDBContext fullStackDBContext;
