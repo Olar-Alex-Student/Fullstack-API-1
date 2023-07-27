@@ -170,53 +170,5 @@ namespace FullStack.API.Controllers
 
             return Ok(user);
         }
-
-        // GET Id Uilizator
-
-        [HttpGet]
-
-        [Route("id")]
-        public async Task<IActionResult> GetUserId(string email)
-        {
-
-            // Asignarea Utilizatorului care are mail-ul cerut
-
-            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => (x.Email == email));
-
-            // Verificarea daca Utilizatorul-ul nu este null
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            // Returnarea de Id a Utilizatorului
-
-            return Ok(user.UserId); ;
-        }
-
-        // GET RoleId Uilizator
-
-        [HttpGet]
-
-        [Route("byemail")]
-        public async Task<IActionResult> GetUserByEmail(string email)
-        {
-
-            // Asignarea Utilizatorului care are mail-ul cerut
-
-            var user = await fullStackDBContext.Users.FirstOrDefaultAsync(x => (x.Email == email));
-
-            // Verificarea daca Utilizatorul-ul nu este null
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            // Returnarea de Id a Utilizatorului
-
-            return Ok(user.RoleId); ;
-        }
     }
 }
